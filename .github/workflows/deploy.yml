@@ -23,9 +23,20 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v0
         with:
-        path: /Cesar41199.github.io
-        # node-version: 16 # La versión específica de Node que debe utilizarse para compilar tu proyecto. Por defecto es la 16. (opcional)
-        # package-manager: yarn # El gestor de paquetes de Node que debe instalar las dependencias y compilar tu proyecto. Automáticamente detectadas con base en tu archivo lockfile. (opcional)
+         # path: /Cesar41199.github.io
+            node-version: 16 # La versión específica de Node que debe utilizarse para compilar tu proyecto. Por defecto es la 16. (opcional)
+        cache: 'npm'
+
+        # Not using npm? Change `npm ci` to `yarn install` or `pnpm i`
+        - name: Install dependencies
+          run: npm ci
+        - name: Build React
+          run: npm run build --if-present
+
+        - name: Upload artifact
+          uses: actions/upload-pages-artifact@v1
+          with:
+            path: ./build
 
   deploy:
     needs: build
